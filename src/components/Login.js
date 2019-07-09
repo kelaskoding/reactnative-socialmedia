@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {StyleSheet, Image, AsyncStorage, Alert, View} from 'react-native';
+import {StyleSheet, Image, AsyncStorage, Alert} from 'react-native';
 import {
-    Content,
+    Content, 
     Button,
     Input,
     Text,
-    View,
-    Container
+    Container,
+    View
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
 
@@ -19,7 +19,7 @@ export default class Login extends Component {
         this.state = {
             email: '',
             password: '',
-            onSave: false,
+            onLogin: false,
             token: ''
         }
     }
@@ -33,7 +33,7 @@ export default class Login extends Component {
     }
 
     processLogin = () => {
-        this.setState({onSave: true});
+        this.setState({onLogin: true});
         fetch(BASE_URL + '/account/login', {
             method: 'POST',
             headers: {
@@ -44,9 +44,9 @@ export default class Login extends Component {
             })
             .then(response => response.json())
             .then(responseJson => {
-                this.setState({onSave: false});
+                this.setState({onLogin: false});
                 status = responseJson['status'];
-                if (result) {
+                if(status) {
                     this.setState({token: responseJson['payload']['token']});
                     this.storeToken();
                     Actions.timeline();
@@ -61,6 +61,10 @@ export default class Login extends Component {
             .catch(error => {
                 console.log(error);
             });
+    }
+
+    processRegister = () =>{
+        Actions.register();
     }
 
     render() {
@@ -82,9 +86,14 @@ export default class Login extends Component {
                         <Input placeholder="Password" secureTextEntry={true} style={styles.inputBox} 
                             onChangeText={(text) => this.setState({password: text})}/>
                         <Button full style={styles.button} onPress= {this.processLogin}>
-                            <Text style={styles.buttonText}>Login</Text>
+                            
+                            {
+                                this.state.onLogin
+                                ? <Text style={styles.buttonText}>Login</Text>
+                                : <Text style={styles.buttonText}>Login</Text>
+                            }
                         </Button>
-                        <Button full transparent>
+                        <Button full transparent onPress= {this.processRegister}>
                             <Text style={styles.buttonText}>Register</Text>
                         </Button>
                     </View>
