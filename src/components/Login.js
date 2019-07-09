@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Image} from 'react-native';
+import {StyleSheet, Image, AsyncStorage, Alert, View} from 'react-native';
 import {
     Content,
     Button,
@@ -8,9 +8,61 @@ import {
     View,
     Container
 } from 'native-base';
-import { Actions } from 'react-native-router-flux';
+import {Actions} from 'react-native-router-flux';
+
+const BASE_URL = 'https://socialapp-api.herokuapp.com/api/v1';
 
 export default class Login extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            email: '',
+            password: '',
+            onSave: false,
+            token: ''
+        }
+    }
+
+    storeToken = async() => {
+        try {
+            await AsyncStorage.setItem('APP_TOKEN', this.state.token);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    processLogin = () => {
+        this.setState({onSave: true});
+        fetch(BASE_URL + '/account/login', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+                body: JSON.stringify({email: this.state.email, password: this.state.password})
+            })
+            .then(response => response.json())
+            .then(responseJson => {
+                this.setState({onSave: false});
+                status = responseJson['status'];
+                if (result) {
+                    this.setState({token: responseJson['payload']['token']});
+                    this.storeToken();
+                    Actions.timeline();
+                } else {
+                    Alert.alert('Failed', 'Email or Password not valid!', [
+                        {
+                            text: 'OK'
+                        }
+                    ], {cancelable: false})
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
     render() {
         return (
             <Container style={styles.container}>
@@ -25,9 +77,11 @@ export default class Login extends Component {
                         <Text style={styles.logoText}>Photo Comments</Text>
                     </View>
                     <View style={styles.content}>
-                        <Input placeholder="Email" style={styles.inputBox}/>
-                        <Input placeholder="Password" style={styles.inputBox}/>
-                        <Button full style={styles.button} onPress={()=>Actions.timeline()}>
+                        <Input placeholder="Email" style={styles.inputBox} 
+                            onChangeText={(text) => this.setState({email: text})}/>
+                        <Input placeholder="Password" secureTextEntry={true} style={styles.inputBox} 
+                            onChangeText={(text) => this.setState({password: text})}/>
+                        <Button full style={styles.button} onPress= {this.processLogin}>
                             <Text style={styles.buttonText}>Login</Text>
                         </Button>
                         <Button full transparent>
@@ -67,7 +121,7 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 16,
         fontWeight: '500',
-        color: '#ffffff', 
+        color: '#ffffff',
         textAlign: 'center'
     },
     logoText: {
