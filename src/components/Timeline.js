@@ -12,17 +12,67 @@ import {
     Body,
     Text
 } from 'native-base';
-import {Image} from 'react-native';
+import {Image, AsyncStorage} from 'react-native';
+import {Actions} from 'react-native-router-flux';
+
+const BASE_URL = 'https://socialapp-api.herokuapp.com/api/v1';
 
 export default class Timeline extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            token: '',
+            data: [],
+            isLoading: true,
+            page: 1
+        }
+    }
+
+    componentDidMount() {
+        this.getToken();
+    }
+
+    getToken = async() => {
+        try {
+            const value = await AsyncStorage.getItem('APP_TOKEN');
+            if (value !== null) {
+                this.setState({token: value});
+                this.getAllData();
+            } else {
+                Actions.login();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    getAllData(){
+        fetch(BASE_URL+'/timeline/10/'+this.state.page,{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Barier '+ this.state.token
+            }
+        }).then((response)=> response.json())
+        .then((responseData) =>{
+            let status = responseData['status'];
+            if(status){
+                this.setState({
+                    isLoading:false,
+                    data: responseData['payload']['subset']
+                });
+            }else{
+                Actions.login();
+            }
+        });
+    }
+
     render() {
-        return (
-            <Container>
-                <Header
-                    style={{
-                    backgroundColor: '#581845'
-                }}/>
-                <Content>
+        let postings;
+        if(this.state.data){
+            postings = this.state.data.map( post =>{
+                return(
                     <Card>
                         <CardItem>
                             <Left>
@@ -31,15 +81,15 @@ export default class Timeline extends Component {
                                     uri: 'https://hendrosteven.files.wordpress.com/2007/10/hendro1.jpg'
                                 }}/>
                                 <Body>
-                                    <Text>Hendro Steven</Text>
-                                    <Text note>2019-01-01</Text>
+                                    <Text>{post.account_name}</Text>
+                                    <Text note>{post.post_date}</Text>
                                 </Body>
                             </Left>
                         </CardItem>
                         <CardItem cardBody>
                             <Image
                                 source={{
-                                uri: 'http://www.youandthemat.com/wp-content/uploads/nature-2-26-17.jpg'
+                                uri: post.photo
                             }}
                                 style={{
                                 height: 200,
@@ -48,7 +98,7 @@ export default class Timeline extends Component {
                             }}/>
                         </CardItem>
                         <CardItem>
-                            <Text>Photo Description</Text>
+                            <Text>{post.description}</Text>
                         </CardItem>
                         <CardItem>
                             <Left>
@@ -59,6 +109,17 @@ export default class Timeline extends Component {
                             </Left>
                         </CardItem>
                     </Card>
+                );
+            });
+        }
+        return (
+            <Container>
+                <Header
+                    style={{
+                    backgroundColor: '#581845'
+                }}/>
+                <Content>
+                    
                 </Content>
             </Container>
         );

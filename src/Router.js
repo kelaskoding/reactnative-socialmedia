@@ -9,9 +9,9 @@ export default class Routes extends Component{
         return(
             <Router>
                 <Stack key="root" hideNavBar="{true}">
-                    <Scene key="login" component={Login} title="Login" initial="true"/>
+                    <Scene key="login" component={Login} title="Login"/>
                     <Scene key="register" component={Register} title="Signup" />
-                    <Scene key="timeline" component={Timeline} title="Timeline"/> 
+                    <Scene key="timeline" component={Timeline} title="Timeline" initial="true"/> 
                 </Stack>
             </Router>
         );
