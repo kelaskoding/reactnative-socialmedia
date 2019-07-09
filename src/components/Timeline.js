@@ -10,9 +10,11 @@ import {
     Left,
     Thumbnail,
     Body,
-    Text
+    Text,
+    View,
+    Spinner
 } from 'native-base';
-import {Image, AsyncStorage} from 'react-native';
+import {Image, AsyncStorage, StyleSheet} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 const BASE_URL = 'https://socialapp-api.herokuapp.com/api/v1';
@@ -56,6 +58,7 @@ export default class Timeline extends Component {
             }
         }).then((response)=> response.json())
         .then((responseData) =>{
+            console.log(responseData);
             let status = responseData['status'];
             if(status){
                 this.setState({
@@ -117,11 +120,28 @@ export default class Timeline extends Component {
                 <Header
                     style={{
                     backgroundColor: '#581845'
-                }}/>
+                }}>
+                    <Body><Text style={{color:'#ffffff', fontWeight:'500'}}>PhotoShare</Text></Body>
+                </Header>
                 <Content>
-                    
+                {
+                    this.state.isLoading
+                ? <View style={styles.center}>
+                    <Spinner color='red'/>
+                  </View>
+                : <View></View>
+                }
+                    {postings}
                 </Content>
             </Container>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    center: {
+      marginTop: 20,
+      justifyContent: 'center',
+      alignItems: 'center'
+    }
+});
