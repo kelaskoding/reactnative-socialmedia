@@ -20,7 +20,7 @@ export default class Kamera extends Component{
             <View style={styles.container}>
                 <RNCamera style={styles.preview} ref={cam => {this.camera = cam; }}>
                     <View>
-                        <TouchableOpacity style={styles.btnCapture}>
+                        <TouchableOpacity style={styles.btnCapture} onPress={this.takePicture}>
                             <Icon name='camera' fontSize="20"/>
                         </TouchableOpacity>
                     </View>
