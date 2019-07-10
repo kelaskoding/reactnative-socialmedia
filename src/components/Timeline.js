@@ -12,7 +12,8 @@ import {
     Body,
     Text,
     View,
-    Spinner
+    Spinner,
+    Fab
 } from 'native-base';
 import {Image, AsyncStorage, StyleSheet} from 'react-native';
 import {Actions} from 'react-native-router-flux';
@@ -49,23 +50,20 @@ export default class Timeline extends Component {
         }
     }
 
-    getAllData(){
-        fetch(BASE_URL+'/timeline/10/'+this.state.page,{
+    getAllData() {
+        fetch(BASE_URL + '/timeline/10/' + this.state.page, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Barier '+ this.state.token
+                'Authorization': 'Barier ' + this.state.token
             }
-        }).then((response)=> response.json())
-        .then((responseData) =>{
+        }).then((response) => response.json()).then((responseData) => {
             console.log(responseData);
             let status = responseData['status'];
-            if(status){
-                this.setState({
-                    isLoading:false,
-                    data: responseData['payload']['subset']
+            if (status) {
+                this.setState({isLoading: false, data: responseData['payload']['subset']
                 });
-            }else{
+            } else {
                 Actions.login();
             }
         });
@@ -73,47 +71,50 @@ export default class Timeline extends Component {
 
     render() {
         let postings;
-        if(this.state.data){
-            postings = this.state.data.map( post =>{
-                return(
-                    <Card>
-                        <CardItem>
-                            <Left>
-                                <Thumbnail
+        if (this.state.data) {
+            postings = this
+                .state
+                .data
+                .map(post => {
+                    return (
+                        <Card>
+                            <CardItem>
+                                <Left>
+                                    <Thumbnail
+                                        source={{
+                                        uri: 'https://hendrosteven.files.wordpress.com/2007/10/hendro1.jpg'
+                                    }}/>
+                                    <Body>
+                                        <Text>{post.account_name}</Text>
+                                        <Text note>{post.post_date}</Text>
+                                    </Body>
+                                </Left>
+                            </CardItem>
+                            <CardItem cardBody>
+                                <Image
                                     source={{
-                                    uri: 'https://hendrosteven.files.wordpress.com/2007/10/hendro1.jpg'
+                                    uri: post.photo
+                                }}
+                                    style={{
+                                    height: 200,
+                                    width: null,
+                                    flex: 1
                                 }}/>
-                                <Body>
-                                    <Text>{post.account_name}</Text>
-                                    <Text note>{post.post_date}</Text>
-                                </Body>
-                            </Left>
-                        </CardItem>
-                        <CardItem cardBody>
-                            <Image
-                                source={{
-                                uri: post.photo
-                            }}
-                                style={{
-                                height: 200,
-                                width: null,
-                                flex: 1
-                            }}/>
-                        </CardItem>
-                        <CardItem>
-                            <Text>{post.description}</Text>
-                        </CardItem>
-                        <CardItem>
-                            <Left>
-                                <Button transparent>
-                                    <Icon active name="chatbubbles"/>
-                                    <Text>Comments</Text>
-                                </Button>
-                            </Left>
-                        </CardItem>
-                    </Card>
-                );
-            });
+                            </CardItem>
+                            <CardItem>
+                                <Text>{post.description}</Text>
+                            </CardItem>
+                            <CardItem>
+                                <Left>
+                                    <Button transparent>
+                                        <Icon active name="chatbubbles"/>
+                                        <Text>Comments</Text>
+                                    </Button>
+                                </Left>
+                            </CardItem>
+                        </Card>
+                    );
+                });
         }
         return (
             <Container>
@@ -121,18 +122,35 @@ export default class Timeline extends Component {
                     style={{
                     backgroundColor: '#581845'
                 }}>
-                    <Body><Text style={{color:'#ffffff', fontWeight:'500'}}>PhotoShare</Text></Body>
+                    <Body>
+                        <Text
+                            style={{
+                            color: '#ffffff',
+                            fontWeight: '500'
+                        }}>PhotoShare</Text>
+                    </Body>
                 </Header>
                 <Content>
-                {
-                    this.state.isLoading
-                ? <View style={styles.center}>
-                    <Spinner color='red'/>
-                  </View>
-                : <View></View>
-                }
+                    {this.state.isLoading
+                        ? <View style={styles.center}>
+                                <Spinner color='red'/>
+                            </View>
+                        : <View></View>
+}
                     {postings}
                 </Content>
+                <View style={{
+                    flex: 1
+                }}>
+                    <Fab
+                        style={{
+                        backgroundColor: '#5067FF'
+                    }}
+                    onPress={()=>{Actions.kamera();}}
+                        position="bottomRight">
+                        <Icon name="add"/>
+                    </Fab>
+                </View>
             </Container>
         );
     }
@@ -140,8 +158,8 @@ export default class Timeline extends Component {
 
 const styles = StyleSheet.create({
     center: {
-      marginTop: 20,
-      justifyContent: 'center',
-      alignItems: 'center'
+        marginTop: 20,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
