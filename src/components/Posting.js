@@ -1,14 +1,38 @@
 import React, {Component} from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
+import {View, Image, Text, StyleSheet, AsyncStorage} from 'react-native';
 import { Container, Header, Body, Content, Left, Icon, Right, Item, Label, Input, Footer, FooterTab, Button } from 'native-base';
 import { Actions, ActionConst } from 'react-native-router-flux';
+import RNFS from 'react-native-fs';
+
+const BASE_URL = 'https://socialapp-api.herokuapp.com/api/v1';
 
 export default class Posting extends Component {
 
     constructor(){
         super();
         this.state = {
-            onProcess: false
+            onProcess: false,
+            token: '',
+            description: ''
+        }
+    }
+
+    componentDidMount(){
+        this.getToken();
+    }
+
+    getToken = async ()=>{
+        try{
+            const value = await AsyncStorage.getItem('APP_TOKEN');
+            if(value!==null){
+                this.setState({
+                    token: value
+                });
+            }else{
+                Actions.login({type: ActionConst.RESET});
+            }
+        }catch(err){
+            console.log(err);
         }
     }
 
@@ -16,7 +40,29 @@ export default class Posting extends Component {
         this.setState({
             onProcess: true
         },()=>{
-            //manggil API
+            RNFS.readFile(this.props.data.uri,'base64')
+                .then(base64=>{
+                    fetch(BASE_URL+'/timeline',{
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Barier '+ this.state.token
+                        },
+                        body: JSON.stringify({
+                            photo: 'data:image/jpeg;base64,'+base64,
+                            description: this.state.description
+                        })
+                    })
+                    .then(response=>response.json())
+                    .then(responseJson =>{
+                        this.setState({
+                            onProcess: false
+                        });
+                        Actions.timeline({type: ActionConst.RESET});
+                    }).catch(err =>{
+                        console.log(err);
+                    });
+                });
         });
     }
 
@@ -40,7 +86,7 @@ export default class Posting extends Component {
                     {photo}
                     <Item floatingLabel>
                         <Label>Descriptions</Label>
-                        <Input/>
+                        <Input onChangeText={(text)=> this.setState({description:text})}/>
                     </Item>
                 </Content>
                 <Footer>
