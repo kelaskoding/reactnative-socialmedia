@@ -4,21 +4,18 @@ import {
     Button,
     Icon,
     Header,
-    Content,
     Card,
     CardItem,
     Left,
     Thumbnail,
     Body,
     Text,
-    View,
-    Spinner,
     Fab
 } from 'native-base';
-import {Image, StyleSheet} from 'react-native';
+import {Image, StyleSheet, FlatList, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import AsyncStorage from '@react-native-community/async-storage';
-import { BASE_URL } from '../conf/Config'
+import {BASE_URL} from '../conf/Config'
 
 export default class Timeline extends Component {
 
@@ -27,7 +24,7 @@ export default class Timeline extends Component {
         this.state = {
             token: '',
             data: [],
-            isLoading: true,
+            isLoading: false,
             page: 1
         }
     }
@@ -51,7 +48,9 @@ export default class Timeline extends Component {
     }
 
     getAllData() {
-        fetch(BASE_URL + '/timeline/10/' + this.state.page, {
+        let page = this.state.page;
+        this.setState({isLoading: true});
+        fetch(BASE_URL + '/timeline/5/' + page, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,7 +60,14 @@ export default class Timeline extends Component {
             console.log(responseData);
             let status = responseData['status'];
             if (status) {
-                this.setState({isLoading: false, data: responseData['payload']['subset']
+                this.setState({
+                    isLoading: false,
+                    data: page === 1
+                        ? responseData['payload']['subset']
+                        : [
+                            ...this.state.data,
+                            responseData['payload']['subset']
+                        ]
                 });
             } else {
                 Actions.login();
@@ -69,55 +75,17 @@ export default class Timeline extends Component {
         });
     }
 
+    handleLoadMore = () => {
+        console.log('handleMore');
+        this.setState({
+            page: this.state.page + 1
+        }, () => {
+            this.getAllData();
+        });
+    }
+
     render() {
-        let postings;
-        if (this.state.data) {
-            postings = this
-                .state
-                .data
-                .map(post => {
-                    return (
-                        <Card key={post.id}>
-                            <CardItem>
-                                <Left>
-                                    <Thumbnail
-                                        source={{
-                                        uri: 'https://hendrosteven.files.wordpress.com/2007/10/hendro1.jpg'
-                                    }}/>
-                                    <Body>
-                                        <Text>{post.account_name}</Text>
-                                        <Text note>{post.post_date}</Text>
-                                    </Body>
-                                </Left>
-                            </CardItem>
-                            <CardItem cardBody>
-                                <Image
-                                    source={{
-                                    uri: post.photo
-                                }}
-                                    style={{
-                                    height: 200,
-                                    width: null,
-                                    flex: 1
-                                }}/>
-                            </CardItem>
-                            <CardItem>
-                                <Text>{post.description}</Text>
-                            </CardItem>
-                            <CardItem>
-                                <Left>
-                                    <Button transparent onPress={()=>{
-                                        Actions.komentar({postingId: post.id})
-                                    }}>
-                                        <Icon active name="chatbubbles"/>
-                                        <Text>Comments</Text>
-                                    </Button>
-                                </Left>
-                            </CardItem>
-                        </Card>
-                    );
-                });
-        }
+
         return (
             <Container>
                 <Header
@@ -132,21 +100,64 @@ export default class Timeline extends Component {
                         }}>PhotoShare</Text>
                     </Body>
                 </Header>
-                <Content>
-                    {this.state.isLoading
-                        ? <View style={styles.center}>
-                                <Spinner color='red'/>
-                            </View>
-                        : <View></View>
-}
-                    {postings}
-                </Content>
-                <View>
+                <View style={{
+                    flex: 1
+                }}>
+                    <FlatList
+                        data={this.state.data}
+                        renderItem={({item}) => (
+                        <Card key={item.id}>
+                            <CardItem>
+                                <Left>
+                                    <Thumbnail
+                                        source={{
+                                        uri: 'https://hendrosteven.files.wordpress.com/2007/10/hendro1.jpg'
+                                    }}/>
+                                    <Body>
+                                        <Text>{item.account_name}</Text>
+                                        <Text note>{item.post_date}</Text>
+                                    </Body>
+                                </Left>
+                            </CardItem>
+                            <CardItem cardBody>
+                                <Image
+                                    source={{
+                                    uri: item.photo
+                                }}
+                                    style={{
+                                    height: 200,
+                                    width: null,
+                                    flex: 1
+                                }}/>
+                            </CardItem>
+                            <CardItem>
+                                <Text>{item.description}</Text>
+                            </CardItem>
+                            <CardItem>
+                                <Left>
+                                    <Button
+                                        transparent
+                                        onPress={() => {
+                                        Actions.komentar({postingId: item.id})
+                                    }}>
+                                        <Icon active name="chatbubbles"/>
+                                        <Text>Comments</Text>
+                                    </Button>
+                                </Left>
+                            </CardItem>
+                        </Card>
+                    )}
+                        keyExtractor={item => String(item.id)}
+                        onEndReached={this.handleLoadMore}
+                        onEndReachedThreshold={10}/>
+
                     <Fab
                         style={{
                         backgroundColor: '#5067FF'
                     }}
-                    onPress={()=>{Actions.kamera();}}
+                        onPress={() => {
+                        Actions.kamera();
+                    }}
                         position="bottomRight">
                         <Icon name="add"/>
                     </Fab>
