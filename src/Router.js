@@ -5,6 +5,7 @@ import Register from './components/Register';
 import Timeline from './components/Timeline'; 
 import Kamera from './components/Kamera';
 import Posting from './components/Posting';
+import Komentar from './components/Komentar';
 
 export default class Routes extends Component{
     render(){
@@ -16,6 +17,7 @@ export default class Routes extends Component{
                     <Scene key="timeline" component={Timeline} title="Timeline" initial="true"/> 
                     <Scene key="kamera" component={Kamera} />
                     <Scene key="posting" component={Posting} title="Posting" />
+                    <Scene key="komentar" component={Komentar} title="Comments"/>
                 </Stack>
             </Router>
         );

@@ -106,7 +106,9 @@ export default class Timeline extends Component {
                             </CardItem>
                             <CardItem>
                                 <Left>
-                                    <Button transparent>
+                                    <Button transparent onPress={()=>{
+                                        Actions.komentar({postingId: post.id})
+                                    }}>
                                         <Icon active name="chatbubbles"/>
                                         <Text>Comments</Text>
                                     </Button>
