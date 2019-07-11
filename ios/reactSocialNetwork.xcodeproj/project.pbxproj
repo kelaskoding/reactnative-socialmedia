@@ -59,6 +59,7 @@
 		A2A32B4586784D94A47213E0 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 24962C1C6CA245D8A5FF5310 /* Zocial.ttf */; };
 		587BA23D39C3455FA53FA3F9 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E82D10B6CBA484DBAA41471 /* libRNCamera.a */; };
 		5EAE02C0D3DE425D911AD7F3 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD7F917A0904CC199548F88 /* libRNFS.a */; };
+		B574B68B2D9F48CE888EBAE0 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 031152FC3D364C9AA7F623BE /* libRNCAsyncStorage.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -388,6 +389,8 @@
 		4E82D10B6CBA484DBAA41471 /* libRNCamera.a */ = {isa = PBXFileReference; name = "libRNCamera.a"; path = "libRNCamera.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		3A9FEEBC420E4BB684A9D8CF /* RNFS.xcodeproj */ = {isa = PBXFileReference; name = "RNFS.xcodeproj"; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		0CD7F917A0904CC199548F88 /* libRNFS.a */ = {isa = PBXFileReference; name = "libRNFS.a"; path = "libRNFS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		538B22B5818A46CDAB006006 /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; name = "RNCAsyncStorage.xcodeproj"; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		031152FC3D364C9AA7F623BE /* libRNCAsyncStorage.a */ = {isa = PBXFileReference; name = "libRNCAsyncStorage.a"; path = "libRNCAsyncStorage.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -418,6 +421,7 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				587BA23D39C3455FA53FA3F9 /* libRNCamera.a in Frameworks */,
 				5EAE02C0D3DE425D911AD7F3 /* libRNFS.a in Frameworks */,
+				B574B68B2D9F48CE888EBAE0 /* libRNCAsyncStorage.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -609,6 +613,7 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				1C307ACB6A4A41469AB0771A /* RNCamera.xcodeproj */,
 				3A9FEEBC420E4BB684A9D8CF /* RNFS.xcodeproj */,
+				538B22B5818A46CDAB006006 /* RNCAsyncStorage.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1283,11 +1288,13 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\@react-native-community\async-storage\ios",
 				);
 			};
 			name = Debug;
@@ -1311,11 +1318,13 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\@react-native-community\async-storage\ios",
 				);
 			};
 			name = Release;
@@ -1340,6 +1349,7 @@
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\@react-native-community\async-storage\ios",
 				);
 			};
 			name = Debug;
@@ -1363,6 +1373,7 @@
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\@react-native-community\async-storage\ios",
 				);
 			};
 			name = Release;
@@ -1394,11 +1405,13 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\@react-native-community\async-storage\ios",
 				);
 			};
 			name = Debug;
@@ -1430,11 +1443,13 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\@react-native-community\async-storage\ios",
 				);
 			};
 			name = Release;
@@ -1465,11 +1480,13 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\@react-native-community\async-storage\ios",
 				);
 			};
 			name = Debug;
@@ -1500,11 +1517,13 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\@react-native-community\async-storage\ios",
 				);
 			};
 			name = Release;

@@ -15,8 +15,9 @@ import {
     Spinner,
     Fab
 } from 'native-base';
-import {Image, AsyncStorage, StyleSheet} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import AsyncStorage from '@react-native-community/async-storage';
 import { BASE_URL } from '../conf/Config'
 
 export default class Timeline extends Component {
@@ -76,7 +77,7 @@ export default class Timeline extends Component {
                 .data
                 .map(post => {
                     return (
-                        <Card>
+                        <Card key={post.id}>
                             <CardItem>
                                 <Left>
                                     <Thumbnail

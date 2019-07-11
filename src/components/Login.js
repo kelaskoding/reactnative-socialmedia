@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Image, AsyncStorage, Alert} from 'react-native';
+import {StyleSheet, Image, Alert} from 'react-native';
 import {
     Content, 
     Button,
@@ -9,6 +9,7 @@ import {
     View
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
+import AsyncStorage from '@react-native-community/async-storage';
 import { BASE_URL } from '../conf/Config'
 
 export default class Login extends Component {
