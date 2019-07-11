@@ -17,8 +17,7 @@ import {
 } from 'native-base';
 import {Image, AsyncStorage, StyleSheet} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-
-const BASE_URL = 'https://socialapp-api.herokuapp.com/api/v1';
+import { BASE_URL } from '../conf/Config'
 
 export default class Timeline extends Component {
 
@@ -139,9 +138,7 @@ export default class Timeline extends Component {
 }
                     {postings}
                 </Content>
-                <View style={{
-                    flex: 1
-                }}>
+                <View>
                     <Fab
                         style={{
                         backgroundColor: '#5067FF'

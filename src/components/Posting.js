@@ -3,8 +3,7 @@ import {View, Image, Text, StyleSheet, AsyncStorage} from 'react-native';
 import { Container, Header, Body, Content, Left, Icon, Right, Item, Label, Input, Footer, FooterTab, Button } from 'native-base';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import RNFS from 'react-native-fs';
-
-const BASE_URL = 'https://socialapp-api.herokuapp.com/api/v1';
+import { BASE_URL } from '../conf/Config'
 
 export default class Posting extends Component {
 

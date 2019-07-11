@@ -4,8 +4,7 @@ import { Container, Content,
 
 import { Actions, ActionConst } from 'react-native-router-flux';
 import { Alert, View, StyleSheet } from 'react-native';
-
-const BASE_URL = 'https://socialapp-api.herokuapp.com/api/v1';
+import { BASE_URL } from '../conf/Config'
 
 export default class Register extends Component{
 

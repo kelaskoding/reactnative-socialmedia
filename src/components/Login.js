@@ -9,8 +9,7 @@ import {
     View
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
-
-const BASE_URL = 'https://socialapp-api.herokuapp.com/api/v1';
+import { BASE_URL } from '../conf/Config'
 
 export default class Login extends Component {
 
