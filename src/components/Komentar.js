@@ -18,7 +18,7 @@ import {
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import AsyncStorage from '@react-native-community/async-storage';
-import { BASE_URL } from '../conf/Config';
+import {BASE_URL} from '../conf/Config';
 
 export default class Komentar extends Component {
 
@@ -51,65 +51,64 @@ export default class Komentar extends Component {
         }
     }
 
-    getAllComments = ()=>{
-        fetch(BASE_URL+'/comments/'+this.props.postingId,{
+    getAllComments = () => {
+        fetch(BASE_URL + '/comments/' + this.props.postingId, {
             method: 'GET',
-            headers:{
-                'Content-Type' : 'application/json',
-                'Authorization': 'Barier '+ this.state.token
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Barier ' + this.state.token
             }
-        }).then((response)=>response.json())
-        .then((responseData)=>{
+        }).then((response) => response.json()).then((responseData) => {
             let status = responseData['status'];
-            if(status){
-                this.setState({
-                    isLoading: false,
-                    data: responseData['payload']['subset']
+            if (status) {
+                this.setState({isLoading: false, data: responseData['payload']['subset']
                 });
-            }else{
+            } else {
                 Actions.login({type: ActionConst.RESET});
             }
         });
     }
 
-    sendComments= () =>{
-        this.setState({
-            isLoading: true
-        });
-        fetch(BASE_URL+'/comments',{
+    sendComments = () => {
+        this.setState({isLoading: true});
+        fetch(BASE_URL + '/comments', {
             method: 'POST',
-            headers:{
+            headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Barier '+ this.state.token
+                'Authorization': 'Barier ' + this.state.token
             },
-            body: JSON.stringify({
-                posting_id: this.props.postingId,
-                comments: this.state.stringComments
-            })
-        }).then((response)=> response.json())
-        .then(responseJson=>{
+            body: JSON.stringify({posting_id: this.props.postingId, comments: this.state.stringComments})
+        }).then((response) => response.json()).then(responseJson => {
             this.setState({
-                isLoading:false,
-                stringComments:'',
-                data: [].concat(data,responseJson['payload'])
+                isLoading: false,
+                stringComments: '',
+                data: [].concat(this.state.data, responseJson['payload'])
             });
         })
     }
 
     render() {
         let comments = <View></View>;
-        if(this.state.data){
-            comments = this.state.data.map(komentar =>{
-                <ListItem key={komentar.id}>
-                    <Left>
-                        <Thumbnail source={{uri: 'https://hendrosteven.files.wordpress.com/2007/10/hendro1.jpg'}}/>
-                    </Left>
-                    <Body>
-                        <Text>{komentar.account_name}</Text>
-                        <Text note>{komentar.comment}</Text>
-                    </Body>
-                </ListItem>
-            });
+        if (this.state.data) {
+            comments = this
+                .state
+                .data
+                .map(komentar => {
+                    return (
+                        <ListItem avatar key={komentar.id}>
+                            <Left>
+                                <Thumbnail
+                                    source={{
+                                    uri: 'https://hendrosteven.files.wordpress.com/2007/10/hendro1.jpg'
+                                }}/>
+                            </Left>
+                            <Body>
+                                <Text>{komentar.account_name}</Text>
+                                <Text note>{komentar.comment}</Text>
+                            </Body>
+                        </ListItem>
+                    );
+                });
         }
         return (
             <Container>
@@ -142,7 +141,9 @@ export default class Komentar extends Component {
                         placeholder='Your comments'
                         style={{
                         width: '80%'
-                    }} onChangeText={(val)=>this.setState({stringComments:val})}/>
+                    }}
+                        onChangeText={(val) => this.setState({stringComments: val})}
+                        value={this.state.stringComments}/>
                     <Button onPress={this.sendComments}>
                         <Text>Send</Text>
                     </Button>
