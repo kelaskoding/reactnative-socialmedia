@@ -72,6 +72,30 @@ export default class Komentar extends Component {
         });
     }
 
+    sendComments= () =>{
+        this.setState({
+            isLoading: true
+        });
+        fetch(BASE_URL+'/comments',{
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Barier '+ this.state.token
+            },
+            body: JSON.stringify({
+                posting_id: this.props.postingId,
+                comments: this.state.stringComments
+            })
+        }).then((response)=> response.json())
+        .then(responseJson=>{
+            this.setState({
+                isLoading:false,
+                stringComments:'',
+                data: [].concat(data,responseJson['payload'])
+            });
+        })
+    }
+
     render() {
         let comments = <View></View>;
         if(this.state.data){
@@ -118,8 +142,8 @@ export default class Komentar extends Component {
                         placeholder='Your comments'
                         style={{
                         width: '80%'
-                    }}/>
-                    <Button>
+                    }} onChangeText={(val)=>this.setState({stringComments:val})}/>
+                    <Button onPress={this.sendComments}>
                         <Text>Send</Text>
                     </Button>
                 </Footer>
