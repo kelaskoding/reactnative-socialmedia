@@ -106,7 +106,7 @@ export default class Timeline extends Component {
                     <FlatList
                         data={this.state.data}
                         renderItem={({item}) => (
-                        <Card key={item.id}>
+                        <Card key={item.id + '_card'}>
                             <CardItem>
                                 <Left>
                                     <Thumbnail
@@ -121,6 +121,7 @@ export default class Timeline extends Component {
                             </CardItem>
                             <CardItem cardBody>
                                 <Image
+                                    key={item.id + '_img'}
                                     source={{
                                     uri: item.photo
                                 }}
