@@ -11,6 +11,7 @@ import {
 import {Actions} from 'react-native-router-flux';
 import AsyncStorage from '@react-native-community/async-storage';
 import { BASE_URL } from '../conf/Config'
+import * as Animatable from 'react-native-animatable';
 
 export default class Login extends Component {
 
@@ -72,12 +73,14 @@ export default class Login extends Component {
             <Container style={styles.container}>
                 <Content padder>
                     <View style={styles.container}>
-                        <Image
+                        
+                        <Animatable.Image animation='bounce' iterationCount="infinite"
                             source={require('../images/icon.png')}
                             style={{
                             width: 70,
                             height: 70
                         }}/>
+                        
                         <Text style={styles.logoText}>Photo Comments</Text>
                     </View>
                     <View style={styles.content}>
@@ -96,6 +99,7 @@ export default class Login extends Component {
                         <Button full transparent onPress= {this.processRegister}>
                             <Text style={styles.buttonText}>Register</Text>
                         </Button>
+
                     </View>
                 </Content>
             </Container>

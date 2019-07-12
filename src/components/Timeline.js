@@ -10,7 +10,8 @@ import {
     Thumbnail,
     Body,
     Text,
-    Fab
+    Fab,
+    Right
 } from 'native-base';
 import {Image, StyleSheet, FlatList, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
